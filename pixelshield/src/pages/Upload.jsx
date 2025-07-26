@@ -96,9 +96,9 @@ const Upload = () => {
     }
 
     return (
-      <div className="w-full mx-auto text-white flex flex-col items-center">
+      <div className="w-full mx-auto text-white flex flex-col items-start">
         <h3 className="text-lg font-semibold mb-2">Verification Result</h3>
-        <div className="bg-[#1c2c45] p-4 rounded-xl shadow-md w-[55%] mx-auto">
+        <div className="bg-[#1c2c45] p-4 rounded-xl shadow-md w-[85%] mx-auto">
           <img
             src={selectedImage}
             alt="verified"
@@ -130,14 +130,16 @@ const Upload = () => {
   };
 
   return (
-    <div className="w-full text-white bg-[#0F1B2C] flex items-start justify-between h-screen">
+    <div className="w-full text-white bg-[#0F1B2C] flex items-start justify-between h-screen flex-col-reverse md:flex-row ">
       {/* Left Side */}
       <div className="w-full md:w-[35%] lg:w-[32%]">
         <div className="mt-7">
-          <h2 className="text-center text-xl md:text-2xl">Upload images</h2>
+          <h2 className="text-center text-xl md:text-2x hidden md:block">
+            Upload images
+          </h2>
         </div>
 
-        <div className="mt-24 flex flex-col items-center justify-center w-[60%] mx-auto bg-[#14243B] shadow rounded-2xl py-20">
+        <div className="mt-9 md:mt-24 mb-4 flex flex-col items-center justify-center w-[80%] md:w-[60%] mx-auto bg-[#14243B] shadow rounded-2xl py-8 md:py-20">
           <h4 className="text-center">
             Drag & drop your image <br /> or{" "}
           </h4>
@@ -153,7 +155,7 @@ const Upload = () => {
         </div>
 
         {selectedImage && (
-          <div className="mt-4 rounded-2xl flex items-center justify-center w-[60%] mx-auto bg-[#14243B] py-2">
+          <div className="mt-4 mb-3 rounded-2xl flex items-center justify-center w-[60%] mx-auto bg-[#14243B] py-2">
             <div className="w-[90%] mx-auto flex items-center justify-between gap-x-2">
               <img
                 src={selectedImage}
@@ -178,7 +180,7 @@ const Upload = () => {
         )}
 
         {isUploaded && !isVerifying && !isVerified && (
-          <div className="flex items-center justify-center mt-4 w-[60%] mx-auto">
+          <div className="flex items-center justify-center mb-4 mt-4 w-[60%] mx-auto">
             <button
               onClick={handleVerify}
               className="w-full py-1.5 rounded-md cursor-pointer text-white font-medium bg-[#2BBBF3] hover:bg-[#1a9ccf]"
@@ -190,60 +192,67 @@ const Upload = () => {
       </div>
 
       {/* Right Side */}
-      <div className="w-full md:w-[65%] lg:w-[68%] bg-[#14243B] h-screen flex items-center justify-center">
-        {!isVerifying && !isVerified && !showResult && (
-          <h3 className="font-semibold text-xl md:text-2xl text-center px-4">
-            <span className="text-[#2BBBF3]">Upload your image</span> to start
-            verification
-          </h3>
-        )}
+      <div className="w-full md:w-[65%] lg:w-[68%] bg-[#14243B] h-screen flex items-center justify-center px-4">
+        <div className="w-full max-w-[500px] flex flex-col items-center justify-center mx-auto">
+          {!isVerifying && !isVerified && !showResult && (
+            <h3 className="font-semibold text-xl md:text-2xl text-center">
+              <span className="text-[#2BBBF3]">Upload your image</span> to start{" "}
+              <br />
+              verification
+            </h3>
+          )}
 
-        {isVerifying && (
-          <div className="relative w-[150px] h-[150px] md:w-[300px] md:h-[300px] flex flex-col items-center">
-            <CircularProgressbar
-              value={verificationProgress}
-              styles={buildStyles({
-                pathColor: "#2BBBF3",
-                trailColor: "#1e3a5f",
-              })}
-            />
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-[#2BBBF3] text-sm">
-              <p>Generating ZK Proof</p>
-              <p className="text-xl font-bold">{verificationProgress}%</p>
-            </div>
-            <p className="mt-4 text-sm text-white">
-              This would take approximately{" "}
-              <span className="text-[#2BBBF3]">20 minutes</span>
-            </p>
-          </div>
-        )}
-
-        {isVerified && !showResult && (
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative w-[150px] h-[150px] md:w-[300px] md:h-[300px]">
-              <CircularProgressbar
-                value={100}
-                styles={buildStyles({
-                  pathColor: "#2BBBF3",
-                  trailColor: "#1e3a5f",
-                })}
-              />
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-[#2BBBF3] text-sm">
-                <p>Generating ZK Proof</p>
-                <p className="text-xl font-bold">100%</p>
+          {isVerifying && (
+            <div className="flex flex-col items-center justify-center">
+              <div className="relative w-[150px] h-[150px] md:w-[200px] md:h-[200px]">
+                <CircularProgressbar
+                  value={verificationProgress}
+                  styles={buildStyles({
+                    pathColor: "#2BBBF3",
+                    trailColor: "#1e3a5f",
+                  })}
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-[#2BBBF3] text-sm">
+                  <p>Generating ZK Proof</p>
+                  <p className="text-xl font-bold">{verificationProgress}%</p>
+                </div>
               </div>
+              <p className="mt-4 text-sm text-white text-center">
+                This would take approximately{" "}
+                <span className="text-[#2BBBF3]">20 minutes</span>
+              </p>
             </div>
-            <p className="text-sm text-white">Image Verification complete</p>
-            <button
-              onClick={handleViewResults}
-              className="px-6 py-2 rounded-md bg-[#2BBBF3] text-white font-medium hover:bg-[#1a9ccf]"
-            >
-              View results
-            </button>
-          </div>
-        )}
-        {/* Render Result Card */}
-        <div className="w-[90%]">{showResult && renderResultCard()}</div>
+          )}
+
+          {isVerified && !showResult && (
+            <div className="flex flex-col items-center justify-center gap-4">
+              <div className="relative w-[150px] h-[150px] md:w-[200px] md:h-[200px]">
+                <CircularProgressbar
+                  value={100}
+                  styles={buildStyles({
+                    pathColor: "#2BBBF3",
+                    trailColor: "#1e3a5f",
+                  })}
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-[#2BBBF3] text-sm">
+                  <p>Generating ZK Proof</p>
+                  <p className="text-xl font-bold">100%</p>
+                </div>
+              </div>
+              <p className="text-sm text-white text-center">
+                Image Verification complete
+              </p>
+              <button
+                onClick={handleViewResults}
+                className="px-6 py-2 rounded-md bg-[#2BBBF3] text-white font-medium hover:bg-[#1a9ccf]"
+              >
+                View results
+              </button>
+            </div>
+          )}
+
+          {showResult && renderResultCard()}
+        </div>
       </div>
     </div>
   );
